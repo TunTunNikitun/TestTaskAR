@@ -1,0 +1,15 @@
+C:\Users\nikit\source\repos\testTaskAR\bin\Debug\net6.0\testTaskAR.exe
+C:\Users\nikit\source\repos\testTaskAR\bin\Debug\net6.0\testTaskAR.deps.json
+C:\Users\nikit\source\repos\testTaskAR\bin\Debug\net6.0\testTaskAR.runtimeconfig.json
+C:\Users\nikit\source\repos\testTaskAR\bin\Debug\net6.0\testTaskAR.dll
+C:\Users\nikit\source\repos\testTaskAR\bin\Debug\net6.0\testTaskAR.pdb
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\testTaskAR.csproj.AssemblyReference.cache
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\testTaskAR.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\testTaskAR.AssemblyInfoInputs.cache
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\testTaskAR.AssemblyInfo.cs
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\testTaskAR.csproj.CoreCompileInputs.cache
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\testTaskAR.dll
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\refint\testTaskAR.dll
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\testTaskAR.pdb
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\testTaskAR.genruntimeconfig.cache
+C:\Users\nikit\source\repos\testTaskAR\obj\Debug\net6.0\ref\testTaskAR.dll

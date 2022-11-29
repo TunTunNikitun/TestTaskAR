@@ -8,5 +8,6 @@ namespace testTaskAR
 {
     internal interface ICheck
     {
+        public bool Check(string str);
     }
 }
