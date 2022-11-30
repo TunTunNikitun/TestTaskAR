@@ -14,21 +14,20 @@ namespace testTaskAR
     }
     internal class Processor
     {
-        public readonly Dictionary<string, int> Dictionary  = new Dictionary<string, int>();
-        public readonly List<int> Fails = new List<int>();
+        public readonly Dictionary<string, int> Dictionary = new();
+        public readonly List<int> Fails = new();
         public void Run(ICheck check, string[] files)
         {
-            try
+            foreach (var file in files)
             {
-
-                foreach (var file in files)
+                if (!File.Exists(file))
+                    continue;
+                var lines = File.ReadAllLines(file).ToList();
+                for (int i = 0; i < lines.Count;)
                 {
-                    if (!File.Exists(file))
-                        throw new FileNotFoundException(file);
-                    var lines = File.ReadAllLines(file).ToList();
-                    for (int i = 0; i < lines.Count;)
+                    var line = lines[i];
+                    try
                     {
-                        var line = lines[i];
                         SplitString(line, out int id, out string key, out int value);
                         if (check.Check(line))
                         {
@@ -38,35 +37,37 @@ namespace testTaskAR
                         else
                         {
                             Fails.Add(id);
-                            i++;
+                            throw new Exception($"Невозможно добавить строку: {line}");
                         }
                     }
-                    File.WriteAllText(file, string.Join("\r\n",lines), Encoding.Default);
+                    catch(Exception e) 
+                    {
+                        Console.WriteLine(e.Message);
+                        i++;
+                        continue;
+                    }
                 }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.ToString());
+                File.WriteAllText(file, string.Join("\r\n", lines), Encoding.Default);
             }
         }
 
-        private void SplitString(string str, out int id, out string key, out int valye)
+        private static void SplitString(string str, out int id, out string key, out int valye)
         {
-            Regex re = new Regex(@"^(\d+)\s*([a-zA-Z]+)\s*(\-*\d+)$");
-            Match match = re.Match(str);
+            Regex re = new(@"^(\d+)\s*([a-zA-Zа-яА-Я]+)\s*(\-*\d+)$");
+            Match match = re.Match(str.Trim());
             if (match.Captures.Count == 0)
-                throw new Exception($"Строка имеет непарвильный вид:{str}");
+                throw new Exception($"Строка имеет неправильный вид: {str}");
             id = int.Parse(match.Groups[1].Value);
             key = match.Groups[2].Value;
             valye = int.Parse(match.Groups[3].Value);
         }
 
-        private void AddToDictionary( int value, string key)
+        private void AddToDictionary(int value, string key)
         {
-            if (Dictionary.Keys.Contains(key))
+            if (Dictionary.ContainsKey(key))
                 Dictionary[key] += value;
             else
-                Dictionary[key] = value;            
+                Dictionary[key] = value;
         }
     }
 }
