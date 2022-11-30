@@ -8,44 +8,54 @@ using System.Threading.Tasks;
 
 namespace testTaskAR
 {
+    internal interface ICheck
+    {
+        public bool Check(string str);
+    }
     internal class Processor
     {
-        public static Dictionary<string, int> Dictionary { get; } = new Dictionary<string, int>();
-        public static List<int> Fails { get; } = new List<int>();
-        public void Run(ICheck check, List<string> files)
+        public readonly Dictionary<string, int> Dictionary  = new Dictionary<string, int>();
+        public readonly List<int> Fails = new List<int>();
+        public void Run(ICheck check, string[] files)
         {
-            var data = new List<string>();
-            foreach (var file in files)
+            try
             {
-                if(!File.Exists(file))
-                    throw new FileNotFoundException(file);
-                var lines = File.ReadAllLines(file).ToList();
-                for(int i =0; i < lines.Count; )
+
+                foreach (var file in files)
                 {
-                    var line = lines[i];
-                    int id =0;
-                    string key = " ";
-                    int value = 0;
-                    SplitString(line,ref id, ref key,ref value);
-                    if (check.Check(line))
+                    if (!File.Exists(file))
+                        throw new FileNotFoundException(file);
+                    var lines = File.ReadAllLines(file).ToList();
+                    for (int i = 0; i < lines.Count;)
                     {
-                        AddToDictionary(value, key);
-                        lines.Remove(line);
+                        var line = lines[i];
+                        SplitString(line, out int id, out string key, out int value);
+                        if (check.Check(line))
+                        {
+                            AddToDictionary(value, key);
+                            lines.Remove(line);
+                        }
+                        else
+                        {
+                            Fails.Add(id);
+                            i++;
+                        }
                     }
-                    else
-                    {
-                        Fails.Add(id);
-                        i++;
-                    }
+                    File.WriteAllText(file, string.Join("\r\n",lines), Encoding.Default);
                 }
-                File.WriteAllLines(file, lines);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
             }
         }
 
-        private void SplitString(string str,ref int id, ref string key, ref int valye)
+        private void SplitString(string str, out int id, out string key, out int valye)
         {
-            Regex re = new Regex(@"(\d+)\s*([a-zA-Z]+)\s*(\-*\d+)");
-            Match match = re.Match(str);           
+            Regex re = new Regex(@"^(\d+)\s*([a-zA-Z]+)\s*(\-*\d+)$");
+            Match match = re.Match(str);
+            if (match.Captures.Count == 0)
+                throw new Exception($"Строка имеет непарвильный вид:{str}");
             id = int.Parse(match.Groups[1].Value);
             key = match.Groups[2].Value;
             valye = int.Parse(match.Groups[3].Value);
@@ -56,7 +66,7 @@ namespace testTaskAR
             if (Dictionary.Keys.Contains(key))
                 Dictionary[key] += value;
             else
-                Dictionary[key] = value;
+                Dictionary[key] = value;            
         }
     }
 }
